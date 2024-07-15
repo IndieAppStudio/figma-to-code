@@ -15,7 +15,7 @@ export type PluginSettings = {
     flutterGenerationMode: string;
     swiftUIGenerationMode: string;
     roundTailwind: boolean;
-}
+  };
 
 export const run = (settings: PluginSettings) => {
     // ignore when nothing was selected

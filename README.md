@@ -9,6 +9,5 @@
 
 
 # TODO
-- Finish add codegen mode in code.ts
-- Finish preview page
+- Add different tabs.
 - Start working on parse 2

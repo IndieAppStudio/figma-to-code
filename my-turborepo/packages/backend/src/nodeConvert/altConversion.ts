@@ -195,21 +195,22 @@ export const convertToNodes = (
               // also, Group will always have at least 2 children.
               return convertNodesOnRectangle(clone);
             case "TEXT":
-            //   globalTextStyleSegments[node.id] = node.getStyledTextSegments([
-            //     "fontName",
-            //     "fills",
-            //     "fontSize",
-            //     "fontWeight",
-            //     "hyperlink",
-            //     "indentation",
-            //     "letterSpacing",
-            //     "lineHeight",
-            //     "listOptions",
-            //     "textCase",
-            //     "textDecoration",
-            //     "textStyleId",
-            //     "fillStyleId",
-            //   ]);
+              globalTextStyleSegments[node.id] = node.getStyledTextSegments([
+                "fontName",
+                "fills",
+                "fontSize",
+                "fontWeight",
+                "hyperlink",
+                "indentation",
+                "letterSpacing",
+                "lineHeight",
+                "listOptions",
+                "textCase",
+                "textDecoration",
+                "textStyleId",
+                "fillStyleId",
+                "openTypeFeatures"
+              ]);
               return standardClone(node, parent);
             case "STAR":
             case "POLYGON":
