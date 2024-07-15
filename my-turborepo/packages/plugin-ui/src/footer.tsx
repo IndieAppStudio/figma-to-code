@@ -4,10 +4,10 @@ import QuestionIcon from "../../../assets/question.png";
 export const Footer = () => {
     return(
         <>
-            <footer>
+            <footer className="flex flex-row">
             <section className="subsection">
             <h4 className="category-name">
-                <img src={LoginIcon} alt="verbal icon" />
+                <img src={LoginIcon} alt="verbal icon" className="h-6 w-6"/>
                 Login
             </h4>
             
@@ -15,7 +15,7 @@ export const Footer = () => {
 
             <section className="subsection">
             <h4 className="category-name">
-                <img src={QuestionIcon} alt="verbal icon" />
+                <img src={QuestionIcon} alt="verbal icon" className="h-6 w-6"/>
                 Question
             </h4>
             
