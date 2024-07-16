@@ -3,6 +3,36 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark as theme } from "react-syntax-highlighter/dist/esm/styles/prism";
 import copy from "copy-to-clipboard";
 import { FrameworkTypes, PluginSettings } from "backend";
+import { Navbar } from "./nav";
+import { Tabs, Tab } from "@mui/material";
+import { settings } from "./settings";
+import ExportIcon from "../../../assets/export.png";
+import DesignIcon from "../../../assets/design.png";
+import MagicWardIcon from "../../../assets/magic-ward.png";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+  style?: React.CSSProperties;
+}
+
+function TabPanel(props: TabPanelProps) {
+const { children, value, index } = props;
+
+return value === index ? (
+  <div
+  style={{
+      flexGrow: 1,
+      ...props.style,
+  }}
+  hidden={value !== index}
+  id={`simple-tabpanel-${index}`}
+  >
+  {value === index && children}
+  </div>
+) : null;
+}
 
 type PluginUIProps = {
   code: string;
@@ -27,9 +57,125 @@ type PluginUIProps = {
 
 export const PluginUI = (props: PluginUIProps) => {
   const [isResponsiveExpanded, setIsResponsiveExpanded] = useState(false);
+  const [tabIndex, setTabIndex] = useState(0)
+
+  const switchTab = (event: any, newValue: number) => {
+      setTabIndex(newValue)
+  }
 
   return (
-    <div className="flex flex-col h-full dark:text-white">
+    <>
+    <div
+          // style={{
+          //   display: "flex",
+          //   flexDirection: "row",
+          //   overflow: "auto",
+          //   // alignItems: "stretch",
+          //   height: "100%",
+          // }}
+        // className="flex flex-col overflow-auto h-full"
+        // className="flex flex-row gap-8 flex-wrap p-2 border-b-2 border-gray"
+      >
+      <Tabs
+            variant="fullWidth"
+            style={{
+              minHeight: 40,
+              backgroundColor: "#F9F9F9",
+              flexShrink: 0,
+              width: settings.ui.baseWidth,
+              borderRight: "1px solid #ccc",
+            }}
+            TabIndicatorProps={{
+              style: { transition: "none" },
+            }}
+            value={tabIndex}
+            onChange={switchTab}
+            indicatorColor="primary"
+            textColor="primary"
+          >
+            <Tab
+              style={{
+                minHeight: 40,
+                minWidth: 0,
+
+              }}
+              label={
+                <span
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    textTransform: "none",
+                  }}
+                >
+                  Original Export
+                </span>
+            //     <section className="brightness-0 invert">
+            //      <h4 className="flex items-center gap-2 text-base">
+            //      <img src={ExportIcon} alt="reaction icon" className="h-6 w-6 block"/>
+            //      Export
+            //      </h4>
+            //  </section>
+              }
+            />
+            <Tab
+              style={{
+                minHeight: 40,
+                minWidth: 0,
+              }}
+              label={
+              //   <section >
+              //     <h4 className="flex items-center gap-2 text-base">
+              //     <img src={DesignIcon} alt="memory icon" className="h-6 w-6 block"/>
+              //     Design System
+              //     </h4>
+              //  </section>
+              <span
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    textTransform: "none",
+                  }}
+                >
+                  Builder Export
+                </span>
+              }
+            />
+            <Tab
+              style={{
+                minHeight: 40,
+                minWidth: 0,
+              }}
+              label={
+                // <section >
+                //   <h4 className="flex items-center gap-2 text-base">
+                //   <img src={MagicWardIcon} alt="verbal icon" className="h-6 w-6 block"/>
+                //   Design With AI
+                //   </h4>
+            
+                // </section>
+                <span
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "bold",
+                    textTransform: "none",
+                  }}
+                >
+                  Design With AI
+                </span>
+              }
+            />
+      </Tabs>
+
+      {/* Reference Figma To Code */}
+        <TabPanel
+        style={{
+          display: "flex",
+          flexDirection: "column",
+        }}
+        value={tabIndex}
+        index={0}
+      >
+        <div className="flex flex-col h-full dark:text-white">
       <div className="p-2 grid grid-cols-4 sm:grid-cols-2 md:grid-cols-4 gap-1">
         {["HTML", "Tailwind", "Flutter", "SwiftUI"].map((tab) => (
           <button
@@ -100,7 +246,22 @@ export const PluginUI = (props: PluginUIProps) => {
           )}
         </div>
       </div>
+        </div>
+        </TabPanel>
+
+        {/* New Figma To Code */}
+        <TabPanel value={tabIndex} index={1}>
+            <h1>Second Tab</h1>
+        </TabPanel>
+
+        {/* Import to Figma */}
+        <TabPanel value={tabIndex} index={2}>
+            <h1>Third Tab</h1>
+        </TabPanel>
+        
     </div>
+    
+    </>
   );
 };
 

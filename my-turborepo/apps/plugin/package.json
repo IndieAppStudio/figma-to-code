@@ -18,6 +18,10 @@
   "author": "Figma",
   "license": "MIT License",
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.16.1",
+    "@teleporthq/teleport-component-generator-react": "^0.33.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

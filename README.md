@@ -9,5 +9,5 @@
 
 
 # TODO
-- Add different tabs.
-- Start working on parse 2
+- Collect Figma JSON
+- Figma to UIDL -> Generate html code

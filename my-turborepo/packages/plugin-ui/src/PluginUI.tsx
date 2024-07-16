@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { coldarkDark as theme } from "react-syntax-highlighter/dist/esm/styles/prism";
 import copy from "copy-to-clipboard";
+import { Navbar } from "./nav";
 
 export type FrameworkTypes = "HTML" | "Tailwind" | "Flutter" | "SwiftUI";
 
@@ -43,8 +44,11 @@ export const PluginUI = (props: PluginUIProps) => {
   const [isResponsiveExpanded, setIsResponsiveExpanded] = useState(false);
 
   return (
+    <>
+    <Navbar />
     <div className="flex flex-col h-full dark:text-white">
       <div className="p-2 grid grid-cols-4 sm:grid-cols-2 md:grid-cols-4 gap-1">
+    
         {["HTML", "Tailwind", "Flutter", "SwiftUI"].map((tab) => (
           <button
             key={`tab ${tab}`}
@@ -115,6 +119,7 @@ export const PluginUI = (props: PluginUIProps) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
