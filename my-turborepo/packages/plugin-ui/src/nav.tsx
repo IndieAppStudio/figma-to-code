@@ -4,6 +4,7 @@ import MagicWardIcon from "../../../assets/magic-ward.png";
 import { Tabs, Tab } from "@mui/material";
 import { useState } from "react";
 import { settings } from "./settings";
+import {BuilderIO} from "./ui";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -147,7 +148,7 @@ export const Navbar = () => {
         </TabPanel>
 
         <TabPanel value={tabIndex} index={1}>
-            <h1>Second Tab</h1>
+          <BuilderIO />
         </TabPanel>
 
         {/* Import to Figma */}

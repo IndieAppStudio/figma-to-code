@@ -17,7 +17,7 @@ interface TabPanelProps {
   style?: React.CSSProperties;
 }
 
-function TabPanel(props: TabPanelProps) {
+export function TabPanel(props: TabPanelProps) {
 const { children, value, index } = props;
 
 return value === index ? (
