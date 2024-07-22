@@ -18,8 +18,9 @@ import { BuilderElement } from "@builder.io/sdk";
 import pako from "pako";
 import * as amplitude from "./functions/track";
 import {v4 as uuid} from "uuid";
-import * as fileType from "file-type";
+import { fileTypeFromBuffer } from "file-type";
 import { transformWebpToPNG } from "./functions/encode-images";
+import { flip } from "lodash";
 
 
 
@@ -143,7 +144,7 @@ export async function processImages(layer: Node) {
             convertToSvg(text);
           } else {
             const arrayBuffer = await res.arrayBuffer();
-            const type = fileType(arrayBuffer);
+            const type = await fileTypeFromBuffer(arrayBuffer);
             if (type && (type.ext.includes("svg") || type.mime.includes("svg"))) {
               convertToSvg(await res.text());
               return;
@@ -303,7 +304,7 @@ class App extends SafeComponent{
         return;
         }
         if (data.type === "selectionChange") {
-            
+          console.log(`Selection: ${JSON.stringify(data)}`)
         this.selection = data.elements;
         }
         if (data.type === "selectionWithImages") {
@@ -755,48 +756,48 @@ class App extends SafeComponent{
                     )}
                     {Boolean(this.selection.length) && (
                       <>
-                        {this.showDevModeOption && (
-                          <Tooltip
-                            PopperProps={{
-                              modifiers: { flip: { behavior: ["top"] } },
-                            }}
-                            enterDelay={300}
-                            placement="top"
-                            title={this.getLang().devMode}
-                          >
-                            <FormControlLabel
-                              value="Use Dev Mode"
-                              disabled={!this.selection.length}
-                              style={{
-                                marginTop: 20,
-                                textTransform: "none",
-                                float: "right",
-                                marginRight: 0,
-                              }}
-                              control={
-                                <Switch
-                                  size="small"
-                                  color="primary"
-                                  checked={this.inDevMode}
-                                  onChange={(e) =>
-                                    (this.inDevMode = e.target.checked)
-                                  }
-                                />
-                              }
-                              label={
-                                <span
-                                  style={{
-                                    fontSize: 12,
-                                    position: "relative",
-                                    fontWeight: "bold",
-                                  }}
-                                >
-                                </span>
-                              }
-                              labelPlacement="start"
-                            />
-                          </Tooltip>
-                        )}
+                        {/* {this.showDevModeOption && (
+                          // <Tooltip
+                          //   PopperProps={{
+                          //     modifiers: { flip: { behavior: ["top"] } },
+                          //   }}
+                          //   enterDelay={300}
+                          //   placement="top"
+                          //   title={this.getLang().devMode}
+                          // >
+                          //   <FormControlLabel
+                          //     value="Use Dev Mode"
+                          //     disabled={!this.selection.length}
+                          //     style={{
+                          //       marginTop: 20,
+                          //       textTransform: "none",
+                          //       float: "right",
+                          //       marginRight: 0,
+                          //     }}
+                          //     control={
+                          //       <Switch
+                          //         size="small"
+                          //         color="primary"
+                          //         checked={this.inDevMode}
+                          //         onChange={(e) =>
+                          //           (this.inDevMode = e.target.checked)
+                          //         }
+                          //       />
+                          //     }
+                          //     label={
+                          //       <span
+                          //         style={{
+                          //           fontSize: 12,
+                          //           position: "relative",
+                          //           fontWeight: "bold",
+                          //         }}
+                          //       >
+                          //       </span>
+                          //     }
+                          //     labelPlacement="start"
+                          //   />
+                          // </Tooltip>
+                        )} */}
                         <Tooltip
                           disableHoverListener={Boolean(this.selection.length)}
                           title={this.getLang().selectLayerPop}

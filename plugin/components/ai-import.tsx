@@ -286,7 +286,7 @@ export function AiImport(props: {
           />
           <h4>
             OpenAI Key
-            <HelpTooltip interactive>
+            <HelpTooltip>
               <>
                 Please{" "}
                 <TooltipTextLink href="https://platform.openai.com/signup">

@@ -102,9 +102,7 @@ const allPropertyNames = [
   "booleanOperation",
   "expanded",
   "name",
-  "type",
   "paints",
-  "type",
   "fontSize",
   "textDecoration",
   "fontName",
@@ -113,7 +111,6 @@ const allPropertyNames = [
   "paragraphIndent",
   "paragraphSpacing",
   "textCase",
-  "type",
   "effects",
   "type",
   "layoutGrids",
@@ -124,7 +121,7 @@ const cloneObject = (obj: any, valuesSet = new Set()) => {
   if (!obj || typeof obj !== "object") {
     return obj;
   }
-
+  
   const newObj: any = Array.isArray(obj) ? [] : {};
 
   for (const property of allPropertyNames) {
@@ -206,7 +203,10 @@ async function serialize(
         (await Promise.all(
           element.children
             .filter((child: SceneNode) => child.visible)
-            .map((child: any) => serialize(child as any, options))
+            .map((child: any) => {
+              console.log(`Child: ${JSON.stringify(child)}`)
+              serialize(child as any, options)
+            })
         ))) ||
       undefined,
   };
@@ -226,10 +226,10 @@ async function postSelection() {
     type: "selectionChange",
     elements: fastClone(
       await Promise.all(
-        figma.currentPage.selection.map((el) =>
+        figma.currentPage.selection.map((el) => 
           serialize(el as any, {
             // TODO: only need one level deep......
-            withChildren: true,
+            withChildren: false,
           })
         )
       )

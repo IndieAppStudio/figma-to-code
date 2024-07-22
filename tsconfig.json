@@ -2,16 +2,17 @@
   "compilerOptions": {
     "outDir": "dist",
     "declarationDir": "dist",
-    "target": "es6",
-    "lib": ["es2016", "dom"],
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "strict": true,
     "declaration": true,
     "experimentalDecorators": true,
     "typeRoots": ["node_modules/@types", "node_modules/@figma"],
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "strictNullChecks": false,
   },
   "exclude": ["dist", "node_modules", ".cache", ".cache-loader", ".next", "chrome-extension"]
 }
