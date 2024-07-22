@@ -1,13 +1,22 @@
 {
-  "name": "React Sample",
-  "id": "react-sample",
+  "name": "Figma To Code (HTML,React)",
+  "id": "842128343887148888",
   "api": "1.0.0",
   "editorType": ["figma", "figjam"],
   "permissions": [],
   "main": "dist/code.js",
   "ui": "dist/index.html",
   "networkAccess": {
-    "allowedDomains": ["none"]
+    "allowedDomains": [
+      "https://figma.com",
+      "https://*.amplitude.com",
+      "https://builder.io",
+      "https://*.builder.io",
+      "https://www.googletagmanager.com",
+      "https://*.openai.com",
+      "https://ai-to-figma-tk43uighdq-uc.a.run.app",
+      "https://imgur.com"
+    ]
   },
   "documentAccess": "dynamic-page"
 }

@@ -11,3 +11,4 @@
 # TODO
 - Collect Figma JSON
 - Figma to UIDL -> Generate html code
+- FIX ('Generic type 'IReactionOptions' requires 2 type argument(s))
