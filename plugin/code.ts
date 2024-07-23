@@ -219,6 +219,20 @@ figma.ui.onmessage = async (msg) => {
   if(msg.type === "get-quickTest"){
     console.log("Conduct test ...")
   }
+
+  if(msg.type === "getSelectionWithImages"){
+    figma.ui.postMessage({
+      type: "selectionWithImages",
+      elements: await Promise.all(
+        figma.currentPage.selection.map((el) => 
+          serialize(el as any, {
+            withChildren: false,
+            withImages: true
+          })
+        )
+      )
+    })
+  }
 }
 
 async function postSelection() {

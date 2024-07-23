@@ -21,6 +21,8 @@ import {v4 as uuid} from "uuid";
 import { fileTypeFromBuffer } from "file-type";
 import { transformWebpToPNG } from "./functions/encode-images";
 import { flip } from "lodash";
+import { traverseLayers } from "./functions/traverse-layers";
+import { arrayBufferToBase64 } from "../lib/functions/buffer-to-base64";
 
 
 
@@ -227,7 +229,7 @@ const selectionToBuilder = async (
 class App extends SafeComponent{
 
     // Need to fix: props' implicitly has an 'any' type.
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         makeAutoObservable(this)
     }
@@ -253,7 +255,7 @@ class App extends SafeComponent{
     @observable displayFiddleUrl = "";
     @observable showImportInvalidError = false;
     @observable showRequestFailedError = false;
-    @observable showDevModeOption: boolean = false;
+    @observable showDevModeOption: boolean = true;
     @observable inDevMode: boolean = false;
     @observable isValidImport: null | boolean = null;
     @observable generatingCode = false;
@@ -304,7 +306,6 @@ class App extends SafeComponent{
         return;
         }
         if (data.type === "selectionChange") {
-          console.log(`Selection: ${JSON.stringify(data)}`)
         this.selection = data.elements;
         }
         if (data.type === "selectionWithImages") {
@@ -406,27 +407,134 @@ class App extends SafeComponent{
 
     @action
     async getCode(useFiddle = false) {
-        // const selections = deepClone(this.selectionWithImages)
-        // traverse(selections).forEach(function() {
-        //     if(this.key === "intArr") {
-        //         this.delete();
-        //     }
-        // })
-        // let selectionToBuilderPromise = Promise.resolve(selections)
+      this.displayFiddleUrl = "";
+      this.showImportInvalidError = false;
+      this.showRequestFailedError = false;
         
-        let selectionToBuilderPromise;
-        selectionToBuilderPromise = selectionToBuilder(
-            this.selectionWithImages as any
-          ).catch((err) => {
-            this.loadingGenerate = false;
-            this.generatingCode = false;
-            this.showRequestFailedError = true;
-            amplitude.track("export error");
-            throw err;
-          });
+      if(!this.lipsum){
+        this.selectionWithImages = null;
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: "getSelectionWithImages",
+            },
+          },
+          "*"
+        );
+        await when(() => !!this.selectionWithImages)
+        console.log(`Collect image finished: ${JSON.stringify(this.selectionWithImages)}`)
+        // this.generatingCode = true
 
-        const blockData = await selectionToBuilderPromise;
-        console.log(`Current Data: ${blockData}`)
+        
+        
+      }else{
+        this.selectionWithImages = this.selection;
+      }
+
+      if (!(this.selectionWithImages && this.selectionWithImages[0])) {
+        console.warn("No selection with images");
+        return;
+      }
+
+      // TODO: analyze if page is properly nested and annotated, if not
+      // suggest in the UI what needs grouping
+      let selectionToBuilderPromise;
+      if(!this.inDevMode){
+        console.log("Not in Dev mode")
+        selectionToBuilderPromise = selectionToBuilder(
+          this.selectionWithImages as any
+        ).catch((err) => {
+          this.generatingCode = false;
+          this.loadingGenerate = false;
+          this.showRequestFailedError = true;
+          throw err
+        })
+      }else{
+        console.log("In Dev mode")
+        const selections = deepClone(this.selectionWithImages);
+        traverse(selections).forEach(function () {
+          if (this.key === "intArr") {
+            this.delete();
+          }
+        });
+          selectionToBuilderPromise = Promise.resolve(selections);
+        }
+
+
+        const imagesPromises: Promise<any>[] = [];
+        const imageMap: { [key: string]: string } = {};
+        for (const layer of this.selectionWithImages as SceneNode[]) {
+          traverseLayers(layer, (node) => {
+            const imageFills = getImageFills(node as Node);
+            if (Array.isArray(imageFills) && imageFills.length && !this.inDevMode) {
+              imageFills.forEach((image) => {
+                if ((image as any)?.intArr) {
+                  imagesPromises.push(
+                    (async () => {
+                      const { id } = await fetch(`${apiHost}/api/v1/stage-image`, {
+                        method: "POST",
+                        body: JSON.stringify({
+                          image: arrayBufferToBase64((image as any).intArr),
+                        }),
+                        headers: {
+                          "content-type": "application/json",
+                        },
+                      }).then((res) => {
+                        if (!res.ok) {
+                          console.error("Image upload failed", res);
+                          throw new Error("Image upload failed");
+                        }
+                        return res.json();
+                      });
+                      delete (node as any).intArr;
+                      imageMap[node.id] = id;
+                    })()
+                  );
+                }
+              });
+            }
+          });
+        }
+
+        const blocks = await selectionToBuilderPromise;
+        await Promise.all(imagesPromises).catch((err) => {
+          this.generatingCode = false;
+          this.loadingGenerate = false;
+          this.showRequestFailedError = true;
+          throw err;
+        })
+        const data = {
+          data: {
+            blocks: blocks,
+          },
+        };
+        const json = JSON.stringify(data);
+        if (useFiddle && !this.inDevMode) {
+          const res = await fetch(apiHost + "/api/v1/fiddle", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: json,
+          })
+            .then((res) => {
+              if (!res.ok) {
+                console.error("Failed to create fiddle", res);
+                throw new Error("Failed to create fiddle");
+              }
+              return res.json();
+            })
+            .catch((err) => {
+              this.generatingCode = false;
+              this.selectionWithImages = null;
+              this.showRequestFailedError = true;
+              amplitude.track("fiddle creation failed");
+    
+              throw err;
+            });
+
+            console.log("Finished download")
+          }
     }
 
     async updateStorage() {
@@ -756,48 +864,48 @@ class App extends SafeComponent{
                     )}
                     {Boolean(this.selection.length) && (
                       <>
-                        {/* {this.showDevModeOption && (
-                          // <Tooltip
-                          //   PopperProps={{
-                          //     modifiers: { flip: { behavior: ["top"] } },
-                          //   }}
-                          //   enterDelay={300}
-                          //   placement="top"
-                          //   title={this.getLang().devMode}
-                          // >
-                          //   <FormControlLabel
-                          //     value="Use Dev Mode"
-                          //     disabled={!this.selection.length}
-                          //     style={{
-                          //       marginTop: 20,
-                          //       textTransform: "none",
-                          //       float: "right",
-                          //       marginRight: 0,
-                          //     }}
-                          //     control={
-                          //       <Switch
-                          //         size="small"
-                          //         color="primary"
-                          //         checked={this.inDevMode}
-                          //         onChange={(e) =>
-                          //           (this.inDevMode = e.target.checked)
-                          //         }
-                          //       />
-                          //     }
-                          //     label={
-                          //       <span
-                          //         style={{
-                          //           fontSize: 12,
-                          //           position: "relative",
-                          //           fontWeight: "bold",
-                          //         }}
-                          //       >
-                          //       </span>
-                          //     }
-                          //     labelPlacement="start"
-                          //   />
-                          // </Tooltip>
-                        )} */}
+                        {this.showDevModeOption && (
+                          <Tooltip
+                            PopperProps={{
+                              modifiers: { flip: { behavior: ["top"] } },
+                            }}
+                            enterDelay={300}
+                            placement="top"
+                            title={this.getLang().devMode}
+                          >
+                            <FormControlLabel
+                              value="Use Dev Mode"
+                              disabled={!this.selection.length}
+                              style={{
+                                marginTop: 20,
+                                textTransform: "none",
+                                float: "right",
+                                marginRight: 0,
+                              }}
+                              control={
+                                <Switch
+                                  size="small"
+                                  color="primary"
+                                  checked={this.inDevMode}
+                                  onChange={(e) =>
+                                    (this.inDevMode = e.target.checked)
+                                  }
+                                />
+                              }
+                              label={
+                                <span
+                                  style={{
+                                    fontSize: 12,
+                                    position: "relative",
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                </span>
+                              }
+                              labelPlacement="start"
+                            />
+                          </Tooltip>
+                        )}
                         <Tooltip
                           disableHoverListener={Boolean(this.selection.length)}
                           title={this.getLang().selectLayerPop}
@@ -815,6 +923,7 @@ class App extends SafeComponent{
                               disabled={!this.selection.length}
                               color="primary"
                             >
+                            Get Code
                             </Button>
                           </div>
                         </Tooltip>
@@ -841,7 +950,6 @@ class App extends SafeComponent{
                         </a>
                       </div>
                     )}
-                    <h1>Current selection length: {Boolean(this.selection.length)}</h1>
                     {Boolean(this.selection.length) && (
                       <Button
                         fullWidth
