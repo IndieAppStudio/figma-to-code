@@ -187,28 +187,26 @@ const selectionToBuilder = async (
   
     selection = deepClone(selection);
   
-    traverse(selection).forEach(function (item) {
-      if (this.key === "intArr") {
-        this.delete();
-      }
-    });
+    // traverse(selection).forEach(function (item) {
+    //   if (this.key === "intArr") {
+    //     this.delete();
+    //   }
+    // });
   
     const res = await fetch(`${apiHost}/api/v1/figma-to-builder`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(
-        useGzip
-          ? {
-              compressedNodes: pako.deflate(JSON.stringify(selection), {
-                to: "string",
-              }),
-            }
-          : {
-              nodes: selection,
-            }
-      ),
+      body: JSON.stringify({nodes: selection})
+      //   useGzip
+      //     ? {
+      //         compressedNodes: pako.deflate(JSON.stringify(selection)),
+      //       }
+      //     : {
+      //         nodes: selection,
+      //       }
+      // ),
     }).then((res) => {
       if (!res.ok) {
         console.error("Figma-to-builder request failed", res);
@@ -484,6 +482,7 @@ class App extends SafeComponent{
                           console.error("Image upload failed", res);
                           throw new Error("Image upload failed");
                         }
+                        console.log("Image upload sucessfully")
                         return res.json();
                       });
                       delete (node as any).intArr;
@@ -532,7 +531,7 @@ class App extends SafeComponent{
     
               throw err;
             });
-
+            console.log(`Res: ${JSON.stringify(res)}`)
             console.log("Finished download")
           }
     }

@@ -97,7 +97,7 @@ const allPropertyNames = [
   "letterSpacing",
   "lineHeight",
   "characters",
-  "mainComponent",
+  // "mainComponent",
   "scaleFactor",
   "booleanOperation",
   "expanded",
@@ -125,15 +125,19 @@ const cloneObject = (obj: any, valuesSet = new Set()) => {
   const newObj: any = Array.isArray(obj) ? [] : {};
 
   for (const property of allPropertyNames) {
-    const value = obj[property];
-    if (value !== undefined && typeof value !== "symbol") {
-      newObj[property] = obj[property];
+    try{
+      const value = obj[property];
+      if (value !== undefined && typeof value !== "symbol") {
+        newObj[property] = obj[property];
+      }
+      
+    }catch(err){
+      console.warn("Error at cloneObject", err)
     }
   }
 
   return newObj;
 };
-
 
 async function serialize(
   element: any,
@@ -203,10 +207,9 @@ async function serialize(
         (await Promise.all(
           element.children
             .filter((child: SceneNode) => child.visible)
-            .map((child: any) => {
-              console.log(`Child: ${JSON.stringify(child)}`)
-              serialize(child as any, options)
-            })
+            .map((child: any) => 
+              serialize(child, options)
+            )
         ))) ||
       undefined,
   };
@@ -226,9 +229,10 @@ figma.ui.onmessage = async (msg) => {
       elements: await Promise.all(
         figma.currentPage.selection.map((el) => 
           serialize(el as any, {
-            withChildren: false,
+            withChildren: true,
             withImages: true
           })
+    
         )
       )
     })
@@ -238,16 +242,15 @@ figma.ui.onmessage = async (msg) => {
 async function postSelection() {
   figma.ui.postMessage({
     type: "selectionChange",
-    elements: fastClone(
-      await Promise.all(
-        figma.currentPage.selection.map((el) => 
+    elements: await Promise.all(
+        figma.currentPage.selection.map((el) =>
           serialize(el as any, {
             // TODO: only need one level deep......
-            withChildren: false,
+            withChildren: true,
           })
+        
         )
-      )
-    ),
+      ),
   });
 }
 
