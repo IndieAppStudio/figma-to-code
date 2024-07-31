@@ -5,9 +5,6 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 export default defineConfig({
   root: "./plugin",
   plugins: [viteSingleFile()],
-  define: {
-    global: {}
-  },
   build: {
     target: "esnext",
     assetsInlineLimit: 100000000,
