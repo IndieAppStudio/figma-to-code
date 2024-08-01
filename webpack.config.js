@@ -10,7 +10,7 @@ module.exports = (env, argv) => ({
 
   // This is necessary because Figma's 'eval' works differently than normal eval
   devtool: argv.mode === 'production' ? false : 'inline-source-map',
-
+  
   entry: {
     ui: './plugin/ui.tsx', // The entry point for your UI code
     code: './plugin/code.ts', // The entry point for your plugin code
@@ -24,32 +24,48 @@ module.exports = (env, argv) => ({
         use: 'ts-loader',
         exclude: /node_modules/,
       },
-      {
-        test: /\.js$/,
-        exclude: [{
-          and: [path.resolve(__dirname, "node_modules")],
-          not: [
-            // add any node_modules that should be run through babel here
-            path.resolve(
-              __dirname,
-              "node_modules/@babel/runtime"
-            )
-          ]
-        }],
-        // exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env','@babel/preset-typescript'],
-            plugins: [["polyfill-corejs3", { "method": "usage-global", "version": "3.20" }], "@babel/transform-runtime"]
-          }
-        }
-      },
+      // {
+      //   test: /\.js$/,
+        // exclude: [{
+        //   and: [path.resolve(__dirname, "node_modules")],
+        //   not: [
+        //     // add any node_modules that should be run through babel here
+        //     path.resolve(
+        //       __dirname,
+        //       "node_modules/@babel/runtime"
+        //     )
+        //   ]
+        // }],
+      //   exclude: /node_modules/,
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       presets: [
+      //         [
+      //           '@babel/preset-env',
+      //           {
+      //             useBuiltIns: 'usage',
+      //             targets: {
+      //               browsers: ['> 0.25% and supports es6-module', 'not dead', 'Firefox ESR'],
+      //             },
+      //             corejs: {
+      //               version: '3.35',
+      //               proposals: true,
+      //             },
+      //           },
+      //         ],
+      //         "@babel/preset-typescript"
+      //       ],
+      //       plugins: [['@babel/plugin-transform-runtime']],
+      //     },
+      //   }
+      // },
 
       // Enables including CSS by doing "import './file.css'" in your TypeScript code
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.css$/i,
+        include: path.resolve(__dirname, 'plugin'),
+        use: ["style-loader", "css-loader", "postcss-loader"],
       },
       // Allows you to use "<%= require('./file.svg') %>" in your HTML code to get a data URI
       // { test: /\.(png|jpg|gif|webp|svg|zip)$/, loader: [{ loader: 'url-loader' }] }
@@ -61,7 +77,9 @@ module.exports = (env, argv) => ({
   },
 
   // Webpack tries these extensions for you if you omit the extension like "import './file'"
-  resolve: { extensions: ['.tsx', '.ts', '.jsx', '.js'] },
+  resolve: { 
+    extensions: ['.tsx', '.ts', '.jsx', '.js']
+  },
 
   output: {
     filename: (pathData) => {

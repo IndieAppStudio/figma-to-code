@@ -1,4 +1,4 @@
-import { CodeGenerator } from '@babel/generator'
+import { CodeGenerator } from '@babel/generator';
 import * as types from '@babel/types'
 import { CodeGeneratorFunction } from '../../../types'
 

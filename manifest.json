@@ -5,7 +5,7 @@
   "editorType": ["figma", "figjam"],
   "permissions": [],
   "main": "dist/code.js",
-  "ui": "dist/index.html",
+  "ui": "dist/ui.html",
   "networkAccess": {
     "allowedDomains": [
       "https://figma.com",

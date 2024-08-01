@@ -1,4 +1,5 @@
-import { Validator, Parser } from '../uidl/uidl-validator'
+// import { Validator, Parser } from '../uidl/uidl-validator'
+import { Parser } from '../uidl/uidl-validator'
 import { Resolver, HTMLMapping } from '../uidl/uidl-resolver'
 import { UIDLUtils } from '../shared'
 import {
@@ -18,7 +19,7 @@ const createComponentGenerator = ({
   plugins = [],
   postprocessors = [],
 }: Omit<GeneratorFactoryParams, 'variation'> = {}): ComponentGenerator => {
-  const validator = new Validator()
+  // const validator = new Validator()
   const resolver = new Resolver([HTMLMapping, ...mappings])
   const assemblyLine = new AssemblyLine(plugins)
   const chunksLinker = new Builder()
@@ -29,26 +30,26 @@ const createComponentGenerator = ({
     options: GeneratorOptions = {}
   ): Promise<CompiledComponent> => {
     let cleanedUIDL = input
-    if (!options.skipValidation) {
-      const schemaValidator = options?.isRootComponent
-        ? validator.validateRootComponentSchema
-        : validator.validateComponentSchema
+    // if (!options.skipValidation) {
+    //   const schemaValidator = options?.isRootComponent
+    //     ? validator.validateRootComponentSchema
+    //     : validator.validateComponentSchema
 
-      const schemaValidationResult = schemaValidator(input)
-      const { componentUIDL, valid } = schemaValidationResult
-      if (valid && componentUIDL) {
-        cleanedUIDL = componentUIDL as unknown as Record<string, unknown>
-      } else {
-        throw new Error(schemaValidationResult.errorMsg)
-      }
-    }
+    //   const schemaValidationResult = schemaValidator(input)
+    //   const { componentUIDL, valid } = schemaValidationResult
+    //   if (valid && componentUIDL) {
+    //     cleanedUIDL = componentUIDL as unknown as Record<string, unknown>
+    //   } else {
+    //     throw new Error(schemaValidationResult.errorMsg)
+    //   }
+    // }
 
     const uidl = Parser.parseComponentJSON(cleanedUIDL)
 
-    const contentValidationResult = validator.validateComponentContent(uidl)
-    if (!contentValidationResult.valid) {
-      throw new Error(contentValidationResult.errorMsg)
-    }
+    // const contentValidationResult = validator.validateComponentContent(uidl)
+    // if (!contentValidationResult.valid) {
+    //   throw new Error(contentValidationResult.errorMsg)
+    // }
 
     const resolvedUIDL = resolver.resolveUIDL(uidl, options)
 

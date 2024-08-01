@@ -5,6 +5,7 @@ import { getLayout, hasChildren, isGroupNode } from "../lib/helpers";
 import { Resolver, HTMLMapping } from "./uidl/uidl-resolver";
 import { Parser } from "./uidl/uidl-validator";
 
+
 figma.showUI(__html__, {
   width: settings.ui.baseWidth,
   height: settings.ui.baseHeight,
@@ -302,7 +303,8 @@ figma.on("selectionchange", async () => {
   const uidl = Parser.parseComponentJSON(cleanedUIDL)
 
   const resolvedUIDL = resolver.resolveUIDL(uidl)
-  console.log(`Resolver UIDl: ${resolvedUIDL}`)
+  console.log(`Resolver UIDl: ${JSON.stringify(resolvedUIDL)}`)
+  
   // const generator = createHTMLComponentGenerator()
 
   // console.log(generator.generateComponent())

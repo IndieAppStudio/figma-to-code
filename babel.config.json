@@ -1,0 +1,16 @@
+{
+    "presets": [[
+        "@babel/preset-env",
+        {
+        "useBuiltIns": "usage",
+          "targets": {
+            "browsers": ["> 0.25% and supports es6-module", "not dead", "Firefox ESR"],
+          },
+          "corejs": {
+            "version": 3.35,
+            "proposals": true
+          },
+        }
+      ],"@babel/preset-typescript"],
+    "plugins": [["@babel/plugin-transform-runtime"]]
+}

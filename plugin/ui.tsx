@@ -228,8 +228,8 @@ class App extends SafeComponent{
 
     // Need to fix: props' implicitly has an 'any' type.
     constructor(props: any) {
-        super(props);
-        makeAutoObservable(this)
+      super(props);
+      makeObservable(this);
     }
 
     @observable loading = false;
@@ -563,6 +563,9 @@ class App extends SafeComponent{
     render() {
         return(
             <>
+            <h1 className="text-3xl font-bold underline">
+    Hello world!
+  </h1>
             <Tabs
                 variant="fullWidth"
                 className="min-h-10 bg-[#f9f9f9] shrink-0"
@@ -663,7 +666,8 @@ class App extends SafeComponent{
                         including layout, responsiveness and styling.
                       </p>
                     </Box>
-                    <Loading content={this.loaderContent} />
+                    {/* <Loading content={this.loaderContent} /> */}
+                    
                   </>
                 ) : (
                   <>
@@ -866,7 +870,7 @@ class App extends SafeComponent{
                         {this.showDevModeOption && (
                           <Tooltip
                             PopperProps={{
-                              modifiers: { flip: { behavior: ["top"] } },
+                              // modifiers: { flip: { behavior: ["top"] } },
                             }}
                             enterDelay={300}
                             placement="top"

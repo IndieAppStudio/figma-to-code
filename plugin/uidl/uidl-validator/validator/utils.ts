@@ -14,7 +14,7 @@ import {
   UIDLReferencedStyles,
   UIDLStyleSetTokenReference,
   ComponentValidationError,
-} from '../../../types'
+} from '../../../types';
 
 // Prop definitions and state definitions should have different keys
 export const checkForDuplicateDefinitions = (input: ComponentUIDL) => {
