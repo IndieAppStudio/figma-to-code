@@ -24,10 +24,26 @@ module.exports = (env, argv) => ({
         use: 'ts-loader',
         exclude: /node_modules/,
       },
-      { 
-        test: /\.(ts|tsx)?$/, 
-        use:  'babel-loader',
-        exclude: /node_modules/ 
+      {
+        test: /\.js$/,
+        exclude: [{
+          and: [path.resolve(__dirname, "node_modules")],
+          not: [
+            // add any node_modules that should be run through babel here
+            path.resolve(
+              __dirname,
+              "node_modules/@babel/runtime"
+            )
+          ]
+        }],
+        // exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env','@babel/preset-typescript'],
+            plugins: [["polyfill-corejs3", { "method": "usage-global", "version": "3.20" }], "@babel/transform-runtime"]
+          }
+        }
       },
 
       // Enables including CSS by doing "import './file.css'" in your TypeScript code
@@ -37,10 +53,10 @@ module.exports = (env, argv) => ({
       },
       // Allows you to use "<%= require('./file.svg') %>" in your HTML code to get a data URI
       // { test: /\.(png|jpg|gif|webp|svg|zip)$/, loader: [{ loader: 'url-loader' }] }
-      {
-        test: /\.svg/,
-        type: 'asset/inline',
-      },
+      // {
+      //   test: /\.svg/,
+      //   type: 'asset/inline',
+      // },
     ],
   },
 
