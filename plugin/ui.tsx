@@ -563,9 +563,6 @@ class App extends SafeComponent{
     render() {
         return(
             <>
-            <h1 className="text-3xl font-bold underline">
-    Hello world!
-  </h1>
             <Tabs
                 variant="fullWidth"
                 className="min-h-10 bg-[#f9f9f9] shrink-0"

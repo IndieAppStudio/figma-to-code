@@ -4,6 +4,7 @@ import { getLayout, hasChildren, isGroupNode } from "../lib/helpers";
 // import { test} from "./generator-html";
 import { Resolver, HTMLMapping } from "./uidl/uidl-resolver";
 import { Parser } from "./uidl/uidl-validator";
+import { createHTMLComponentGenerator } from "./generator-html";
 
 
 figma.showUI(__html__, {
@@ -283,7 +284,6 @@ async function postSelection() {
 
 figma.on("selectionchange", async () => {
   // postSelection();
-  const resolver = new Resolver([HTMLMapping])
 
   const cleanedUIDL = {
         "name": "My First Component",
@@ -300,10 +300,10 @@ figma.on("selectionchange", async () => {
           }
         }
       }
-  const uidl = Parser.parseComponentJSON(cleanedUIDL)
-
-  const resolvedUIDL = resolver.resolveUIDL(uidl)
-  console.log(`Resolver UIDl: ${JSON.stringify(resolvedUIDL)}`)
+  const generator = createHTMLComponentGenerator();
+  // const { files } = await generator.generateComponent(cleanedUIDL)
+  // console.log(files[0].content)
+  console.log(generator)
   
   // const generator = createHTMLComponentGenerator()
 

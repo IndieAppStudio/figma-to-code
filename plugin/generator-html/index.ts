@@ -22,60 +22,61 @@ const createHTMLComponentGenerator: HTMLComponentGeneratorInstance = ({
   postprocessors = [],
   strictHtmlWhitespaceSensitivity = false,
 }: GeneratorFactoryParams = {}): any => {
-  console.log("Im in generator")
   const generator = createComponentGenerator()
   const resolver = new Resolver()
   resolver.addMapping(PlainHTMLMapping)
   mappings.forEach((mapping) => resolver.addMapping(mapping))
   const nodesLookup: ElementsLookup = {}
+  // const { htmlComponentPlugin, addExternals } = createHTMLBasePlugin({ nodesLookup })
+  const { addExternals } = createHTMLBasePlugin({ nodesLookup })
+
 
   // const prettierHTML = createPrettierHTMLPostProcessor({
   //   strictHtmlWhitespaceSensitivity,
   // })
 
-  Object.defineProperty(generator, 'addExternalComponents', {
-    value: (params: {
-      externals: Record<string, ComponentUIDL>
-      assets?: GeneratorOptions['assets']
-    }) => {
-      const { externals = {}, assets = {} } = params
-      const componentUIDLs: Record<string, ComponentUIDL> = {}
+  // Object.defineProperty(generator, 'addExternalComponents', {
+  //   value: (params: {
+  //     externals: Record<string, ComponentUIDL>
+  //     assets?: GeneratorOptions['assets']
+  //   }) => {
+  //     const { externals = {}, assets = {} } = params
+  //     const componentUIDLs: Record<string, ComponentUIDL> = {}
 
-      for (const uidlKey of Object.keys(externals)) {
-        // Parsig the VUIDL or unknown JSON, and converting it into proper ComponentUIDL
-        const componentUIDL = Parser.parseComponentJSON(
-          externals[uidlKey] as unknown as Record<string, unknown>
-        )
+  //     for (const uidlKey of Object.keys(externals)) {
+  //       // Parsig the VUIDL or unknown JSON, and converting it into proper ComponentUIDL
+  //       const componentUIDL = Parser.parseComponentJSON(
+  //         externals[uidlKey] as unknown as Record<string, unknown>
+  //       )
 
-        const resolvedUIDL = resolver.resolveUIDL(componentUIDL, { assets }, nodesLookup)
-        componentUIDLs[
-          StringUtils.dashCaseToUpperCamelCase(resolvedUIDL.outputOptions.componentClassName)
-        ] = resolvedUIDL
-      }
+  //       const resolvedUIDL = resolver.resolveUIDL(componentUIDL, { assets }, nodesLookup)
+  //       componentUIDLs[
+  //         StringUtils.dashCaseToUpperCamelCase(resolvedUIDL.outputOptions.componentClassName)
+  //       ] = resolvedUIDL
+  //     }
 
-      addExternals(componentUIDLs, plugins)
-    },
-  })
+  //     addExternals(componentUIDLs, plugins)
+  //   },
+  // })
 
-  const { htmlComponentPlugin, addExternals } = createHTMLBasePlugin({ nodesLookup })
-  generator.addPlugin(htmlComponentPlugin)
-  generator.addPlugin(
-    createCSSPlugin({
-      templateChunkName: 'html-chunk',
-      declareDependency: 'import',
-      forceScoping: true,
-      templateStyle: 'html',
-      staticPropReferences: true,
-    })
-  )
+  // generator.addPlugin(htmlComponentPlugin)
+  // generator.addPlugin(
+  //   createCSSPlugin({
+  //     templateChunkName: 'html-chunk',
+  //     declareDependency: 'import',
+  //     forceScoping: true,
+  //     templateStyle: 'html',
+  //     staticPropReferences: true,
+  //   })
+  // )
 
-  plugins.forEach((plugin) => generator.addPlugin(plugin))
-  mappings.forEach((mapping) => generator.addMapping(mapping))
-  generator.addMapping(PlainHTMLMapping)
+  // plugins.forEach((plugin) => generator.addPlugin(plugin))
+  // mappings.forEach((mapping) => generator.addMapping(mapping))
+  // generator.addMapping(PlainHTMLMapping)
 
-  generator.addPlugin(importStatementsPlugin)
+  // generator.addPlugin(importStatementsPlugin)
 
-  postprocessors.forEach((postProcessor) => generator.addPostProcessor(postProcessor))
+  // postprocessors.forEach((postProcessor) => generator.addPostProcessor(postProcessor))
   // generator.addPostProcessor(prettierHTML)
 
   

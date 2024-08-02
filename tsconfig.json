@@ -3,7 +3,7 @@
   "outDir": "dist",
   "declarationDir": "dist",
   "target": "ES5",
-  "module": "ESNext",
+  "module": "ES6",
   "lib": ["ES5", "DOM"],
   "jsx": "react-jsx",
   "strict": true,

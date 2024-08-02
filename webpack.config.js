@@ -24,48 +24,21 @@ module.exports = (env, argv) => ({
         use: 'ts-loader',
         exclude: /node_modules/,
       },
-      // {
-      //   test: /\.js$/,
-        // exclude: [{
-        //   and: [path.resolve(__dirname, "node_modules")],
-        //   not: [
-        //     // add any node_modules that should be run through babel here
-        //     path.resolve(
-        //       __dirname,
-        //       "node_modules/@babel/runtime"
-        //     )
-        //   ]
-        // }],
-      //   exclude: /node_modules/,
-      //   use: {
-      //     loader: 'babel-loader',
-      //     options: {
-      //       presets: [
-      //         [
-      //           '@babel/preset-env',
-      //           {
-      //             useBuiltIns: 'usage',
-      //             targets: {
-      //               browsers: ['> 0.25% and supports es6-module', 'not dead', 'Firefox ESR'],
-      //             },
-      //             corejs: {
-      //               version: '3.35',
-      //               proposals: true,
-      //             },
-      //           },
-      //         ],
-      //         "@babel/preset-typescript"
-      //       ],
-      //       plugins: [['@babel/plugin-transform-runtime']],
-      //     },
-      //   }
-      // },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      },
 
       // Enables including CSS by doing "import './file.css'" in your TypeScript code
       {
         test: /\.css$/i,
-        include: path.resolve(__dirname, 'plugin'),
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        use: ["style-loader", "css-loader"],
       },
       // Allows you to use "<%= require('./file.svg') %>" in your HTML code to get a data URI
       // { test: /\.(png|jpg|gif|webp|svg|zip)$/, loader: [{ loader: 'url-loader' }] }
@@ -97,6 +70,10 @@ module.exports = (env, argv) => ({
     new webpack.DefinePlugin({
       global: {}, // Fix missing symbol error when running in developer VM
     }),
+    // fix "process is not defined" error:
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new HtmlWebpackPlugin({
       inject: 'body',
       template: './plugin/ui.html',
@@ -108,7 +85,7 @@ module.exports = (env, argv) => ({
       scriptMatchPattern: [/.js$/],
     }),
     new NodePolyfillPlugin({
-			additionalAliases: ['path'],
+			additionalAliases: ['path', 'fs'],
 		}),
   ],
 });

@@ -4,13 +4,16 @@ import {
   ChunkType,
   HastNode,
   ComponentDefaultPluginParams,
-  ComponentUIDL,
+  // ComponentUIDL,
   ElementsLookup,
 } from '../../types'
-import { HASTBuilders, HASTUtils } from '../../common'
+import {ComponentUIDL} from '../../types/uidl';
+// import { HASTBuilders, HASTUtils } from '../../common'
 import { DEFAULT_COMPONENT_CHUNK_NAME } from './constants'
 import { generateHtmlSynatx } from './node-handlers'
 import { StringUtils, UIDLUtils } from '../../shared'
+import * as HASTBuilders from '../../common/builders/hast-builders';
+import * as HASTUtils from '../../common/utils/hast-utils';
 
 interface HtmlPluginConfig {
   componentChunkName: string
@@ -19,7 +22,7 @@ interface HtmlPluginConfig {
 }
 
 interface HtmlPlugin {
-  htmlComponentPlugin: ComponentPlugin
+  // htmlComponentPlugin: ComponentPlugin
   addExternals: (list: Record<string, ComponentUIDL>, plugins: ComponentPlugin[]) => void
 }
 
@@ -54,45 +57,46 @@ export const createHTMLBasePlugin: HtmlPluginFactory<HtmlPluginConfig> = (config
       ? HASTBuilders.createHTMLNode('body')
       : HASTBuilders.createHTMLNode('div')
 
-    const bodyContent = await generateHtmlSynatx(
-      uidl.node,
-      templatesLookUp,
-      propDefinitions,
-      stateDefinitions,
-      {
-        externals: Object.values(externals).reduce(
-          (acc: Record<string, ComponentUIDL>, comp: ComponentUIDL) => {
-            UIDLUtils.setFriendlyOutputOptions(comp)
-            comp.name = StringUtils.removeIllegalCharacters(comp.name) || 'AppComponent'
-            comp.name = UIDLUtils.getComponentClassName(comp)
-            acc[comp.name] = comp
-            return acc
-          },
-          {}
-        ),
-        plugins,
-      },
-      { chunks, dependencies, options, outputOptions }
-    )
+    console.log(generateHtmlSynatx)
+    // const bodyContent = await generateHtmlSynatx(
+    //   uidl.node,
+    //   templatesLookUp,
+    //   propDefinitions,
+    //   stateDefinitions,
+    //   {
+    //     externals: Object.values(externals).reduce(
+    //       (acc: Record<string, ComponentUIDL>, comp: ComponentUIDL) => {
+    //         // UIDLUtils.setFriendlyOutputOptions(comp)
+    //         // comp.name = StringUtils.removeIllegalCharacters(comp.name) || 'AppComponent'
+    //         // comp.name = UIDLUtils.getComponentClassName(comp)
+    //         // acc[comp.name] = comp
+    //         return acc
+    //       },
+    //       {}
+    //     ),
+    //     plugins,
+    //   },
+    //   { chunks, dependencies, options, outputOptions }
+    // )
 
-    HASTUtils.addChildNode(compBase, bodyContent as HastNode)
+    // HASTUtils.addChildNode(compBase, bodyContent as HastNode)
 
-    chunks.push({
-      type: ChunkType.HAST,
-      fileType: FileType.HTML,
-      name: componentChunkName,
-      content: compBase,
-      linkAfter: [],
-      meta: {
-        nodesLookup: templatesLookUp,
-      },
-    })
+    // chunks.push({
+    //   type: ChunkType.HAST,
+    //   fileType: FileType.HTML,
+    //   name: componentChunkName,
+    //   content: compBase,
+    //   linkAfter: [],
+    //   meta: {
+    //     nodesLookup: templatesLookUp,
+    //   },
+    // })
 
     return structure
   }
 
   return {
-    htmlComponentPlugin,
+    // htmlComponentPlugin,
     addExternals,
   }
 }

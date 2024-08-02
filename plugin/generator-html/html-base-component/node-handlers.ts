@@ -1,29 +1,34 @@
 import {
-  UIDLNode,
+  // UIDLNode,
   UIDLElementNode,
-  HastNode,
-  HTMLComponentGeneratorError,
+  // HastNode,
+  // HTMLComponentGeneratorError,
   UIDLAttributeValue,
-  UIDLPropDefinition,
-  UIDLStateDefinition,
+  // UIDLPropDefinition,
+  // UIDLStateDefinition,
   UIDLDynamicReference,
   UIDLStyleDefinitions,
-  HastText,
-  ComponentUIDL,
+  // HastText,
+  // ComponentUIDL,
   ChunkType,
   FileType,
-  ChunkDefinition,
-  UIDLDependency,
+  // ChunkDefinition,
+  // UIDLDependency,
   UIDLStyleValue,
-  GeneratorOptions,
+  // GeneratorOptions,
   UIDLRouteDefinitions,
   ComponentPlugin,
   ComponentStructure,
-  UIDLComponentOutputOptions,
+  // UIDLComponentOutputOptions,
   UIDLElement,
 } from '../../types'
+import { HastText, HastNode, ChunkDefinition,GeneratorOptions } from '../../types/generators';
+import { UIDLNode, UIDLComponentOutputOptions, UIDLPropDefinition, UIDLStateDefinition, UIDLDependency,ComponentUIDL } from '../../types/uidl';
+import { HTMLComponentGeneratorError } from '../../types/errors';
 import { join, relative } from 'path'
-import { HASTBuilders, HASTUtils } from '../../common'
+// import { HASTBuilders, HASTUtils } from '../../common'
+import * as HASTBuilders from '../../common/builders/hast-builders';
+import * as HASTUtils from '../../common/utils/hast-utils';
 import { StringUtils, UIDLUtils } from '../../shared'
 import { staticNode } from '../../uidl/uidl-builders'
 import { createCSSPlugin } from '../../css'
@@ -64,49 +69,51 @@ export const generateHtmlSynatx: NodeToHTML<UIDLNode, Promise<HastNode | HastTex
   subComponentOptions,
   structure
 ) => {
-  switch (node.type) {
-    case 'inject':
-    case 'raw':
+  // switch (node.type) {
+    // case 'inject':
+    // case 'raw':
+    //   return HASTBuilders.createTextNode(node.content.toString())
+
+    // case 'static':
+    //   return HASTBuilders.createTextNode(StringUtils.encode(node.content.toString()))
+
+    // case 'slot':
+    //   return HASTBuilders.createHTMLNode(node.type)
+
+    // case 'element':
+    //   const elementNode = await generateElementNode(
+    //     node,
+    //     templatesLookUp,
+    //     propDefinitions,
+    //     stateDefinitions,
+    //     subComponentOptions,
+    //     structure
+    //   )
+    //   return elementNode
+
+    // case 'dynamic':
+    //   const dynamicNode = await generateDynamicNode(
+    //     node,
+    //     templatesLookUp,
+    //     propDefinitions,
+    //     stateDefinitions,
+    //     subComponentOptions,
+    //     structure
+    //   )
+
+    //   return dynamicNode
+
+    // default:
+      // throw new HTMLComponentGeneratorError(
+        // `generateHtmlSyntax encountered a node of unsupported type: ${JSON.stringify(
+        //   node,
+        //   null,
+        //   2
+        // )} `
+      //   "he"
+      // )
       return HASTBuilders.createTextNode(node.content.toString())
-
-    case 'static':
-      return HASTBuilders.createTextNode(StringUtils.encode(node.content.toString()))
-
-    case 'slot':
-      return HASTBuilders.createHTMLNode(node.type)
-
-    case 'element':
-      const elementNode = await generateElementNode(
-        node,
-        templatesLookUp,
-        propDefinitions,
-        stateDefinitions,
-        subComponentOptions,
-        structure
-      )
-      return elementNode
-
-    case 'dynamic':
-      const dynamicNode = await generateDynamicNode(
-        node,
-        templatesLookUp,
-        propDefinitions,
-        stateDefinitions,
-        subComponentOptions,
-        structure
-      )
-
-      return dynamicNode
-
-    default:
-      throw new HTMLComponentGeneratorError(
-        `generateHtmlSyntax encountered a node of unsupported type: ${JSON.stringify(
-          node,
-          null,
-          2
-        )} `
-      )
-  }
+// }
 }
 
 const generateElementNode: NodeToHTML<UIDLElementNode, Promise<HastNode | HastText>> = async (
