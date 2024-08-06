@@ -1,0 +1,27 @@
+{
+  "name": "capy-plugin-common",
+  "version": "0.34.0",
+  "description": "Common building and modelating functions for ASTs and HASTs",
+  "author": "indie-app-studio",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.json --module commonjs --outDir dist/cjs"
+  },
+  "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-react": "^7.22.5",
+    "@babel/types": "^7.5.5",
+    "capy-shared": "workspace:*",
+    "capy-types": "workspace:*",
+    "jss": "^10.0.0",
+    "jss-preset-default": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/babel__core": "^7.20.5"
+  }
+}
