@@ -1,0 +1,21 @@
+{
+  "name": "capy-plugin-css",
+  "version": "0.34.0",
+  "description": "A plugin for creating the styles into external css files",
+  "author": "indie-app-studio",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.json --module commonjs --outDir dist/cjs"
+  },
+  "dependencies": {
+    "@babel/types": "^7.5.5",
+    "capy-plugin-common": "workspace:*",
+    "capy-shared": "workspace:*",
+    "capy-types": "workspace:*"
+  }
+}

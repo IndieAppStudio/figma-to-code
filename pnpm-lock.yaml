@@ -96,6 +96,36 @@ importers:
         specifier: ^7.6.8
         version: 7.6.8
 
+  packages/capy-component-generator-html:
+    dependencies:
+      capy-component-generator:
+        specifier: workspace:*
+        version: link:../capy-component-generator
+      capy-plugin-css:
+        specifier: workspace:*
+        version: link:../capy-plugin-css
+      capy-plugin-html-base-component:
+        specifier: workspace:*
+        version: link:../capy-plugin-html-base-component
+      capy-plugin-import-statements-html:
+        specifier: workspace:*
+        version: link:../capy-plugin-import-statements-html
+      capy-postprocessor-prettier-html:
+        specifier: workspace:*
+        version: link:../capy-postprocessor-prettier-html
+      capy-shared:
+        specifier: workspace:*
+        version: link:../capy-shared
+      capy-types:
+        specifier: workspace:*
+        version: link:../capy-types
+      capy-uidl-resolver:
+        specifier: workspace:*
+        version: link:../capy-uidl-resolver
+      capy-uidl-validator:
+        specifier: workspace:*
+        version: link:../capy-uidl-validator
+
   packages/capy-plugin-common:
     dependencies:
       '@babel/core':
@@ -123,6 +153,63 @@ importers:
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
+
+  packages/capy-plugin-css:
+    dependencies:
+      '@babel/types':
+        specifier: ^7.5.5
+        version: 7.25.2
+      capy-plugin-common:
+        specifier: workspace:*
+        version: link:../capy-plugin-common
+      capy-shared:
+        specifier: workspace:*
+        version: link:../capy-shared
+      capy-types:
+        specifier: workspace:*
+        version: link:../capy-types
+
+  packages/capy-plugin-html-base-component:
+    dependencies:
+      capy-plugin-common:
+        specifier: workspace:*
+        version: link:../capy-plugin-common
+      capy-plugin-css:
+        specifier: workspace:*
+        version: link:../capy-plugin-css
+      capy-shared:
+        specifier: workspace:*
+        version: link:../capy-shared
+      capy-types:
+        specifier: workspace:*
+        version: link:../capy-types
+      capy-uidl-builders:
+        specifier: workspace:*
+        version: link:../capy-uidl-builders
+
+  packages/capy-plugin-import-statements-html:
+    dependencies:
+      capy-plugin-common:
+        specifier: workspace:*
+        version: link:../capy-plugin-common
+      capy-shared:
+        specifier: workspace:*
+        version: link:../capy-shared
+      capy-types:
+        specifier: workspace:*
+        version: link:../capy-types
+
+  packages/capy-postprocessor-prettier-html:
+    dependencies:
+      capy-shared:
+        specifier: workspace:*
+        version: link:../capy-shared
+      capy-types:
+        specifier: workspace:*
+        version: link:../capy-types
+      prettier:
+        specifier: ^2.3.1
+        version: 2.8.8
 
   packages/capy-shared:
     dependencies:
@@ -1388,6 +1475,11 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+
+  prettier@2.8.8:
+    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
 
   prettier@3.2.5:
     resolution: {integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==}
@@ -3017,6 +3109,8 @@ snapshots:
       source-map-js: 1.2.0
 
   prelude-ls@1.2.1: {}
+
+  prettier@2.8.8: {}
 
   prettier@3.2.5: {}
 
