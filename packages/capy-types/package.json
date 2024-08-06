@@ -1,0 +1,18 @@
+{
+  "name": "capy-types",
+  "version": "0.33.0",
+  "description": "The collection of reusable types across the entire teleport ecosystem",
+  "author": "indie-app-studio",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.json --module commonjs --outDir dist/cjs"
+  }
+}
