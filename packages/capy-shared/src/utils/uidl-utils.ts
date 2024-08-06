@@ -22,7 +22,7 @@ import {
   UIDLRootComponent,
   UIDLResourceItem,
   GeneratorOptions,
-} from 'capy-types';
+} from 'capy-types'
 import { basename } from 'path'
 import { StringUtils } from '..'
 
@@ -32,7 +32,10 @@ export const extractRoutes = (rootComponent: UIDLRootComponent) => {
 
   // Look for conditional nodes in the first level children of the root element
   return rootElement.children.filter(
-    (child) => child.type === 'conditional' && child.content.reference.content.id === 'route'
+    (child) =>
+      child.type === 'conditional' &&
+      child.content.reference.type === 'dynamic' &&
+      child.content.reference.content.id === 'route'
   ) as UIDLConditionalNode[]
 }
 

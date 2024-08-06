@@ -1,7 +1,7 @@
 {
-  "name": "capy-shared",
+  "name": "capy-uidl-builders",
   "version": "0.34.0",
-  "description": "A utility belt for the entire teleportHQ ecosystem",
+  "description": "A set of functions used for constructing UIDL structures",
   "author": "indie-app-studio",
   "license": "MIT",
   "main": "dist/cjs/index.js",
@@ -13,9 +13,6 @@
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.json --module commonjs --outDir dist/cjs"
   },
   "dependencies": {
-    "@babel/types": "^7.5.5",
-    "capy-types": "workspace:*",
-    "jss": "^10.0.0",
-    "jss-preset-default": "^10.0.0"
+    "capy-types": "workspace:*"
   }
 }

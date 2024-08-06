@@ -1,0 +1,27 @@
+{
+  "name": "capy-component-generator",
+  "version": "0.34.0",
+  "description": "Bare-bone component generator on top of which you can add plugins, mappings and post processing functions",
+  "author": "indie-app-studio",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.json --module commonjs --outDir dist/cjs"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.5.5",
+    "@babel/types": "^7.5.5",
+    "@starptech/prettyhtml-hast-to-html": "^0.10.0",
+    "capy-shared": "workspace:*",
+    "capy-types": "workspace:*",
+    "capy-uidl-resolver": "workspace:*",
+    "capy-uidl-validator": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/babel__generator": "^7.6.8"
+  }
+}
