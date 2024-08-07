@@ -1,5 +1,3 @@
-import { result } from "backend";
-
 figma.showUI(__html__, { themeColors: true, height: 300 });
 
 
@@ -21,6 +19,4 @@ figma.ui.onmessage = (msg) => {
 
   figma.closePlugin();
 };
-
-console.log(result);
 

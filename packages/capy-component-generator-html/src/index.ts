@@ -1,7 +1,7 @@
 import { createCSSPlugin } from 'capy-plugin-css'
 import { createHTMLBasePlugin } from 'capy-plugin-html-base-component'
 import importStatementsPlugin from 'capy-plugin-import-statements-html'
-// import { createPrettierHTMLPostProcessor } from 'capy-postprocessor-prettier-html';
+import { createPrettierHTMLPostProcessor } from 'capy-postprocessor-prettier-html';
 import {
   HTMLComponentGeneratorInstance,
   HTMLComponentGenerator,
@@ -19,16 +19,16 @@ const createHTMLComponentGenerator: HTMLComponentGeneratorInstance = ({
   mappings = [],
   plugins = [],
   postprocessors = [],
-  // strictHtmlWhitespaceSensitivity = false,
+  strictHtmlWhitespaceSensitivity = false,
 }: GeneratorFactoryParams = {}): HTMLComponentGenerator => {
   const generator = createComponentGenerator()
   const resolver = new Resolver()
   resolver.addMapping(PlainHTMLMapping)
   mappings.forEach((mapping) => resolver.addMapping(mapping))
 
-  // const prettierHTML = createPrettierHTMLPostProcessor({
-  //   strictHtmlWhitespaceSensitivity,
-  // })
+  const prettierHTML = createPrettierHTMLPostProcessor({
+    strictHtmlWhitespaceSensitivity,
+  })
 
   Object.defineProperty(generator, 'addExternalComponents', {
     value: (params: {
@@ -73,7 +73,7 @@ const createHTMLComponentGenerator: HTMLComponentGeneratorInstance = ({
   generator.addPlugin(importStatementsPlugin)
 
   postprocessors.forEach((postProcessor) => generator.addPostProcessor(postProcessor))
-  // generator.addPostProcessor(prettierHTML)
+  generator.addPostProcessor(prettierHTML)
 
   return generator as HTMLComponentGenerator
 }
