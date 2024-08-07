@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "0.34.0",
+  "description": "Backend for plugin",
+  "author": "indie-app-studio",
+  "license": "MIT",
+  "main": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "type": "module",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json",
+    "dev": "nodemon --exec node --loader ts-node/esm src/index.ts"
+  },
+  "dependencies": {
+    "capy-component-generator-html": "workspace:*",
+    "capy-project-generator-html": "workspace:*",
+    "typescript": "^5.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2"
+  }
+}

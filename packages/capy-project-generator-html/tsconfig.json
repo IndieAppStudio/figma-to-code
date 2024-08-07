@@ -1,0 +1,9 @@
+{
+  "extends": "../typescript-config/plugin.json",
+  "compilerOptions": {
+    "outDir": "dist/esm"
+  },
+  "include": [
+    "./src"
+  ]
+  }

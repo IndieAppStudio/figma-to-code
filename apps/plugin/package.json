@@ -10,7 +10,7 @@
     "tsc:ui": "tsc --noEmit -p ui-src",
     "tsc:watch": "concurrently -n backend,ui \"npm run tsc:main -- --watch --preserveWatchOutput\" \"npm run tsc:ui -- --watch --preserveWatchOutput\"",
     "build": "npm run build:ui && npm run build:main -- --minify",
-    "build:main": "esbuild plugin-src/code.ts --bundle --outfile=dist/code.js",
+    "build:main": "esbuild plugin-src/code.ts --bundle ---minify --sourcemap --outfile=dist/code.js",
     "build:ui": "npx vite build --minify esbuild --emptyOutDir=false",
     "build:watch": "concurrently -n backend,ui \"npm run build:main -- --watch\" \"npm run build:ui -- --watch\"",
     "dev": "concurrently -n tsc,build,vite 'npm:tsc:watch' 'npm:build:watch' 'vite'"
@@ -18,12 +18,13 @@
   "author": "indie-app-studio",
   "license": "MIT License",
   "dependencies": {
+    "backend": "workspace:*",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "capy-types": "workspace:*"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@figma/plugin-typings": "*",
+    "@types/node": "^22.1.0",
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.16",
     "concurrently": "^8.2.2",

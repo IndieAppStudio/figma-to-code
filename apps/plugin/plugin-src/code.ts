@@ -1,8 +1,8 @@
-import {UIDLTypes} from "capy-types";
+import { result } from "backend";
 
 figma.showUI(__html__, { themeColors: true, height: 300 });
 
-console.log(UIDLTypes)
+
 figma.ui.onmessage = (msg) => {
   if (msg.type === "create-rectangles") {
     const nodes = [];
@@ -21,3 +21,6 @@ figma.ui.onmessage = (msg) => {
 
   figma.closePlugin();
 };
+
+console.log(result);
+

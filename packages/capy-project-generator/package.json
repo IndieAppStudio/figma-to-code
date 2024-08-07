@@ -1,0 +1,25 @@
+{
+  "name": "capy-project-generator",
+  "version": "0.34.0",
+  "description": "Generic project generator that requires a specific strategy to run on custom configurations",
+  "author": "indie-app-studio",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.json --module commonjs --outDir dist/cjs"
+  },
+  "dependencies": {
+    "@babel/types": "^7.5.5",
+    "capy-component-generator": "workspace:*",
+    "capy-plugin-common": "workspace:*",
+    "capy-plugin-import-statements": "workspace:*",
+    "capy-shared": "workspace:*",
+    "capy-types": "workspace:*",
+    "capy-uidl-builders": "workspace:*",
+    "capy-uidl-validator": "workspace:*"
+  }
+}

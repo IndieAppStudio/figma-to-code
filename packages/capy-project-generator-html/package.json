@@ -1,0 +1,26 @@
+{
+  "name": "capy-project-generator-html",
+  "version": "0.34.0",
+  "description": "Project generator for generate plain html files",
+  "author": "indie-app-studio",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.json --module commonjs --outDir dist/cjs"
+  },
+  "dependencies": {
+    "capy-component-generator": "workspace:*",
+    "capy-component-generator-html": "workspace:*",
+    "capy-plugin-css": "workspace:*",
+    "capy-postprocessor-prettier-html": "workspace:*",
+    "capy-project-generator": "workspace:*",
+    "capy-types": "workspace:*",
+    "capy-shared": "workspace:*",
+    "cheerio": "^1.0.0-rc.12",
+    "path-browserify": "^1.0.1"
+  }
+}

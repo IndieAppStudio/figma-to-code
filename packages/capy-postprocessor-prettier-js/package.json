@@ -1,0 +1,20 @@
+{
+  "name": "capy-postprocessor-prettier-js",
+  "version": "0.34.0",
+  "description": "A post-processing function that formats js code chunks using prettier and the babylon parser",
+  "author": "indie-app-studio",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.json --module commonjs --outDir dist/cjs"
+  },
+  "dependencies": {
+    "capy-shared": "workspace:*",
+    "capy-types": "workspace:*",
+    "prettier": "^2.3.1"
+  }
+}
