@@ -1,4 +1,6 @@
 import { convertNodesOnRectangle } from "./convertNodesOnRectangle";
+import {ComponentUIDL, UIDLElement, UIDLElementNode} from "../../types"
+
 
 type ParentType = (BaseNode & ChildrenMixin) | null;
 
@@ -93,73 +95,53 @@ const standardClone = <T extends SceneNode>(node: T, parent: ParentType): T => {
   return clonedNode;
 };
 
-export async function convertIntoRootElementNode(
-  element: any,
-): Promise<any>{
+async function convertIntoUIDLElementNode(element: any):Promise<UIDLElementNode> {
+  let nodeType: string;
+
+  // TODO: handler other types such as frame, group, reactangle, ect...
+  // switch (element.type){
+  //   case "TEXT":
+  //     nodeType = "text"
+  //   default:
+  //     nodeType = "container"
+  // }
+  if(element.type === "TEXT"){
+    nodeType = "text"
+  }else{
+    nodeType = "container"
+  }
 
   const cssProps = await element.getCSSAsync();
 
-  // const elementType = element.type === 'FRAME'
-
-  return{
-    name: element.name,
-    node: {
-      type: "element",
-      content: {
-        elementType: "contatiner",
-        style: cssProps
-      },
-      children: element.children || {}
+  return {
+    type: "element",
+    content: {
+      elementType: nodeType,
+      name: element.name,
+      style: cssProps || undefined,
+      children: element.children && (
+        await Promise.all(
+          element.children
+              .filter((child: SceneNode) => child.visible)
+              .map((child: any) => 
+                convertIntoUIDLElementNode(child)
+              )
+        )
+      ) || undefined
     }
   }
 }
 
-export async function convertIntoUIDLElmentNode(
-  element: any,
-  options: {
-    withImages?: boolean;
-    withChildren?: boolean;
-    // TODO
-    withVectorsExported?: boolean;
-  } = {}
-): Promise<any> {
+export async function convertIntoRootElementNode(
+  element: SceneNode,
+): Promise<ComponentUIDL> {
 
-  const cssProps = await element.getCSSAsync();
-  
-  // TODO: better way to enumerate everything, including getters, that is not function
-  // return {
-  //   ...cloneObject(element),
-  //   cssProps,
-  //   fills,
-  //   type: element.type === "VECTOR" ? "RECTANGLE" : element.type,
-  //   data: JSON.parse(element.getSharedPluginData("builder", "data") || "{}"),
-  //   children:
-  //     (options.withChildren &&
-  //       element.children &&
-  //       !isSvg &&
-  //       (await Promise.all(
-  //         element.children
-  //           .filter((child: SceneNode) => child.visible)
-  //           .map((child: any) => 
-  //             serialize(child, options)
-  //           )
-  //       ))) ||
-  //     undefined,
-  // };
+  const uidlElementNode: UIDLElementNode = await convertIntoUIDLElementNode(element)
+
   return {
     name: element.name,
-    node:
-      (options.withChildren &&
-        element.children &&
-        (await Promise.all(
-          element.children
-            .filter((child: SceneNode) => child.visible)
-            .map((child: any) => 
-              convertIntoUIDLElmentNode(child, options)
-            )
-        ))) ||
-      undefined,
-  };
+    node: uidlElementNode
+  }
 }
 
 export const convertIntoNodes = (

@@ -2,7 +2,6 @@ import { settings } from "../packages/constants/settings";
 import { fastClone } from "../packages/functions/fast-clone";
 import { getLayout, hasChildren, isGroupNode } from "../lib/helpers";
 import {convertIntoNodes} from "../packages/backend"
-import { convertIntoUIDLElmentNode } from "../packages/backend/altNodes/altConversion";
 import { convertIntoRootElementNode } from "../packages/backend/altNodes/altConversion";
 
 figma.showUI(__html__, {
@@ -281,8 +280,9 @@ async function postSelection() {
 figma.on("selectionchange", async () => {
   // postSelection();
   // console.log(convertIntoNodes(figma.currentPage.selection))
-  console.log(figma.currentPage.selection.map((el) => 
-    convertIntoRootElementNode(el as any)
+  let result = await Promise.all(figma.currentPage.selection.map((el: SceneNode) => 
+    convertIntoRootElementNode(el)
   ))
+  console.log(`Result: ${JSON.stringify(result)}`)
 
 });
